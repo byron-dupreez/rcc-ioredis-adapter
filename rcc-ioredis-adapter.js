@@ -2,14 +2,16 @@
 
 const isInstanceOf = require('core-functions/objects').isInstanceOf;
 
-const rccAdapters = require('rcc-core');
+const rccCore = require('rcc-core');
 
 const IoRedisClient = require('ioredis');
-// const Ioredis = IoredisClient.Cluster;
-// const ReplyError = Ioredis.ReplyError;
+const ReplyError = IoRedisClient.ReplyError;
 
-const DEFAULT_REDIS_HOST = rccAdapters.DEFAULT_REDIS_HOST;
-const DEFAULT_REDIS_PORT = rccAdapters.DEFAULT_REDIS_PORT;
+const DEFAULT_REDIS_HOST = 'localhost';
+const DEFAULT_REDIS_PORT = rccCore.DEFAULT_REDIS_PORT;
+
+exports.getDefaultHost = () => DEFAULT_REDIS_HOST;
+exports.getDefaultPort = () => DEFAULT_REDIS_PORT;
 
 exports.createClient = createClient;
 
@@ -22,7 +24,8 @@ exports.resolveHostAndPortFromMovedError = resolveHostAndPortFromMovedError;
 
 /**
  * Creates a new RedisClient instance.
- * @param {RedisClientOptions|} redisClientOptions - the options to use to construct the new RedisClient instance
+ * @param {RedisClientOptions|undefined} [redisClientOptions] - the options to use to construct the new Redis client
+ *        instance
  * @return {RedisClient} returns the new RedisClient instance
  */
 function createClient(redisClientOptions) {
@@ -71,13 +74,14 @@ function adaptClient(client) {
   }
 
   if (!client.addEventListeners) {
-    client.addEventListeners = function (onConnect, onReady, onReconnecting, onError, onClientError, onEnd) {
+    client.addEventListeners = function (onConnect, onReady, onReconnecting, onError, onClientError, onEnd, onClose) {
       if (typeof onConnect === 'function') this.on('connect', onConnect);
       if (typeof onReady === 'function') this.on('ready', onReady);
       if (typeof onReconnecting === 'function') this.on('reconnecting', onReconnecting);
       if (typeof onError === 'function') this.on('error', onError);
       if (typeof onClientError === 'function') this.on('clientError', onClientError);
       if (typeof onEnd === 'function') this.on('end', onEnd);
+      if (typeof onClose === 'function') this.on('close', onClose);
     }
   }
 
@@ -114,7 +118,7 @@ function deleteClientFunction(fnName) {
  */
 function isMovedError(error) {
   // Check if error message contains something like: "MOVED 14190 127.0.0.1:6379"
-  return /*!!isInstanceOf(error, ReplyError) &&*/ error.code === 'MOVED';
+  return !!isInstanceOf(error, ReplyError) && error.message && error.message.startsWith('MOVED ');
 }
 
 /**
@@ -128,5 +132,5 @@ function resolveHostAndPortFromMovedError(movedError) {
   if (isMovedError(movedError)) {
     return movedError.message.substring(movedError.message.lastIndexOf(' ') + 1).split(':');
   }
-  throw new Error(`Unexpected ioredis client "moved" error - ${movedError}`);
+  throw new Error(`Unexpected ioredis client "moved" ReplyError - ${movedError}`);
 }

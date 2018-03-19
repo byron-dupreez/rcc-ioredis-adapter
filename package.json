@@ -16,7 +16,7 @@
     "deep-equal": "1.0.1",
     "logging-utils": "4.0.22",
     "ioredis": "3.2.2",
-    "rcc-core": "1.0.1"
+    "rcc-core": "1.0.2"
   },
   "devDependencies": {
     "tape": "^4.9.0",
