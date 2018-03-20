@@ -1,6 +1,6 @@
 {
   "name": "rcc-ioredis-adapter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wraps and adapts the 'ioredis' module & its Redis client instances to be used with the 'redis-client-cache' module",
   "author": "Byron du Preez",
   "license": "Apache-2.0",
@@ -13,8 +13,6 @@
   },
   "dependencies": {
     "core-functions": "3.0.22",
-    "deep-equal": "1.0.1",
-    "logging-utils": "4.0.22",
     "ioredis": "3.2.2",
     "rcc-core": "1.0.3"
   },
