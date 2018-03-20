@@ -1,4 +1,4 @@
-# rcc-ioredis-adapter v1.0.0
+# rcc-ioredis-adapter v1.0.1
 Wraps and adapts the 'ioredis' module and its Redis client instances to be used with the 'redis-client-cache' module
 
 Main module:
