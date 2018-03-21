@@ -1,5 +1,10 @@
 ## Changes
 
+### 1.0.3
+- Added `.npmignore`
+- Renamed `release_notes.md` to `CHANGES.md`
+- Updated dependencies
+
 ### 1.0.2
 - Minor updates to .gitignore
 - Removed unnecessary `logging-utils` & `deep-equals` dependencies
