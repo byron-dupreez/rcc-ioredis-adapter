@@ -1,5 +1,8 @@
 ## Changes
 
+### 1.0.5
+- Added unit tests to verify `ping` function works as expected
+
 ### 1.0.4
 - Replaced `getDefaultHost` function with `defaultHost` property
 - Replaced `getDefaultPort` function with `defaultPort` property
