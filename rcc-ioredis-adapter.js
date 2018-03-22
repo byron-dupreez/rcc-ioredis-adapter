@@ -7,11 +7,11 @@ const rccCore = require('rcc-core');
 const IoRedisClient = require('ioredis');
 const ReplyError = IoRedisClient.ReplyError;
 
-const DEFAULT_REDIS_HOST = 'localhost';
-const DEFAULT_REDIS_PORT = rccCore.DEFAULT_REDIS_PORT;
+const defaultHost = 'localhost';
+const defaultPort = rccCore.DEFAULT_REDIS_PORT;
 
-exports.getDefaultHost = () => DEFAULT_REDIS_HOST;
-exports.getDefaultPort = () => DEFAULT_REDIS_PORT;
+exports.defaultHost = defaultHost;
+exports.defaultPort = defaultPort;
 
 exports.createClient = createClient;
 
@@ -63,7 +63,7 @@ function adaptClient(client) {
     client.resolveHostAndPort = function () {
       const connectionOptions = this.connection_options;
       return connectionOptions ? [connectionOptions.host, connectionOptions.port] :
-        this.options ? [this.options.host, this.options.port] : [DEFAULT_REDIS_HOST, DEFAULT_REDIS_PORT];
+        this.options ? [this.options.host, this.options.port] : [defaultHost, defaultPort];
     };
   }
 
